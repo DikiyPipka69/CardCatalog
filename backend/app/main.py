@@ -25,6 +25,8 @@ app.add_middleware(
 app.include_router(tasks_router)
 
 
+hhhh = 0
+
 @app.get("/api/health")
 def health():
     return {"status": "ok"}
@@ -34,3 +36,7 @@ def health():
 # backend/app/main.py -> parent (app) -> parent (backend) -> parent (project root) / frontend
 FRONTEND_DIR = Path(__file__).resolve().parent.parent.parent / "frontend"
 app.mount("/", StaticFiles(directory=FRONTEND_DIR, html=True), name="frontend")
+
+
+# cd backend
+# uvicorn app.main:app --reload
