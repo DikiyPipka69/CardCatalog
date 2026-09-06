@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="ru">
+<html lang="ru" data-theme="light">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Card Catalog - трекер задач</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2214%22 fill=%22%231b2430%22/><rect x=%2222%22 y=%2228%22 width=%2256%22 height=%2244%22 rx=%223%22 fill=%22%23eef1f6%22/><circle cx=%2232%22 cy=%2238%22 r=%223%22 fill=%22%231b2430%22/><rect x=%2222%22 y=%2250%22 width=%2256%22 height=%223%22 fill=%22%23c1443d%22/></svg>">
+<title>Card Catalog</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2214%22 fill=%22%231a1815%22/><rect x=%2222%22 y=%2228%22 width=%2256%22 height=%2244%22 rx=%223%22 fill=%22%23efe9de%22/><circle cx=%2232%22 cy=%2238%22 r=%223%22 fill=%22%231a1815%22/><rect x=%2222%22 y=%2250%22 width=%2256%22 height=%223%22 fill=%22%23a6875a%22/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
@@ -13,27 +13,37 @@
   <div class="wrap">
     <header>
       <div>
-        <p class="eyebrow">Картотека задач</p>
+        <p class="eyebrow" data-i18n="eyebrow">Картотека задач</p>
         <h1>Card Catalog</h1>
       </div>
-      <div class="count"><strong id="openCount">0</strong>в работе</div>
+      <div class="header-right">
+        <button class="icon-toggle" id="langToggle" title="Switch language" aria-label="Switch language">
+          <span id="langLabel">RU</span>
+        </button>
+        <button class="icon-toggle" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <div class="count"><strong id="openCount">0</strong><span data-i18n="inProgress">в работе</span></div>
+      </div>
     </header>
 
     <form class="add" id="addForm">
-      <input type="text" name="title" placeholder="Новая карточка — что нужно сделать?" required maxlength="200" />
-      <select name="category">
-        <option value="general">Общее</option>
-        <option value="client">Клиент</option>
-        <option value="design">Дизайн</option>
-        <option value="dev">Разработка</option>
+      <input type="text" name="title" id="titleInput" data-i18n-placeholder="titlePlaceholder" placeholder="Новая карточка — что нужно сделать?" required maxlength="200" />
+      <select name="category" id="categorySelect">
+        <option value="general" data-i18n="catGeneral">Общее</option>
+        <option value="client" data-i18n="catClient">Клиент</option>
+        <option value="design" data-i18n="catDesign">Дизайн</option>
+        <option value="dev" data-i18n="catDev">Разработка</option>
       </select>
-      <button type="submit">Завести карточку</button>
+      <input type="date" name="due_date" title="Срок" />
+      <button type="submit" data-i18n="addButton">Завести карточку</button>
     </form>
 
-    <div class="drawer-label">В работе</div>
+    <div class="drawer-label" data-i18n="inProgressLabel">В работе</div>
     <div class="cards" id="openCards"></div>
 
-    <div class="drawer-label">Закрыто</div>
+    <div class="drawer-label" data-i18n="doneLabel">Закрыто</div>
     <div class="cards" id="doneCards"></div>
   </div>
 
