@@ -1,5 +1,25 @@
 const API = (window.API_BASE || '') + '/api/tasks';
 
+// ---------- Anonymous per-browser session ----------
+// Not real authentication — just keeps each visitor's demo data separate
+// without requiring accounts or passwords. Stored once, reused forever
+// in this browser (until localStorage is cleared).
+
+function getSessionId(){
+  let id = localStorage.getItem('cardcatalog-session-id');
+  if (!id) {
+    id = (crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`);
+    localStorage.setItem('cardcatalog-session-id', id);
+  }
+  return id;
+}
+
+const SESSION_ID = getSessionId();
+
+function authHeaders(extra = {}){
+  return {'X-Session-Id': SESSION_ID, ...extra};
+}
+
 let allTasks = [];
 let currentLang = 'ru';
 
@@ -89,7 +109,7 @@ const CATEGORY_ICONS = {
 // ---------- Data ----------
 
 async function fetchTasks(){
-  const res = await fetch(API);
+  const res = await fetch(API, {headers: authHeaders()});
   allTasks = await res.json();
   render();
 }
@@ -194,7 +214,7 @@ function startEdit(titleEl){
     if (newTitle && newTitle !== task.title) {
       await fetch(`${API}/${id}`, {
         method: 'PATCH',
-        headers: {'Content-Type': 'application/json'},
+        headers: authHeaders({'Content-Type': 'application/json'}),
         body: JSON.stringify({title: newTitle})
       });
       await fetchTasks();
@@ -216,7 +236,7 @@ async function toggleTask(id, currentlyDone){
 
   await fetch(`${API}/${id}`, {
     method: 'PATCH',
-    headers: {'Content-Type': 'application/json'},
+    headers: authHeaders({'Content-Type': 'application/json'}),
     body: JSON.stringify({done: !currentlyDone})
   });
   fetchTasks();
@@ -227,7 +247,7 @@ async function deleteTask(id){
   if (card) card.classList.add('removing');
   await new Promise(r => setTimeout(r, card ? 280 : 0));
 
-  await fetch(`${API}/${id}`, {method: 'DELETE'});
+  await fetch(`${API}/${id}`, {method: 'DELETE', headers: authHeaders()});
   fetchTasks();
 }
 
@@ -241,7 +261,7 @@ document.getElementById('addForm').addEventListener('submit', async (e) => {
 
   await fetch(API, {
     method: 'POST',
-    headers: {'Content-Type': 'application/json'},
+    headers: authHeaders({'Content-Type': 'application/json'}),
     body: JSON.stringify({title, category, due_date})
   });
   form.title.value = '';

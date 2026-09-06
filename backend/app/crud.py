@@ -6,17 +6,24 @@ from sqlalchemy.orm import Session
 from app import models, schemas
 
 
-def get_tasks(db: Session) -> list[models.Task]:
-    stmt = select(models.Task).order_by(models.Task.id.desc())
+def get_tasks(db: Session, session_id: str) -> list[models.Task]:
+    stmt = (
+        select(models.Task)
+        .where(models.Task.session_id == session_id)
+        .order_by(models.Task.id.desc())
+    )
     return list(db.scalars(stmt).all())
 
 
-def get_task(db: Session, task_id: int) -> models.Task | None:
-    return db.get(models.Task, task_id)
+def get_task(db: Session, task_id: int, session_id: str) -> models.Task | None:
+    stmt = select(models.Task).where(
+        models.Task.id == task_id, models.Task.session_id == session_id
+    )
+    return db.scalars(stmt).first()
 
 
-def create_task(db: Session, payload: schemas.TaskCreate) -> models.Task:
-    task = models.Task(**payload.model_dump())
+def create_task(db: Session, payload: schemas.TaskCreate, session_id: str) -> models.Task:
+    task = models.Task(**payload.model_dump(), session_id=session_id)
     db.add(task)
     db.commit()
     db.refresh(task)
