@@ -127,33 +127,14 @@ uvicorn app.main:app --reload
 
 ---
 
-## Деплой
+## Перспективы
 
-Проект можно бесплатно разместить на **Render**.
-
-```text
-Root Directory
-backend
-
-Build Command
-pip install -r requirements.txt
-
-Start Command
-uvicorn app.main:app --host 0.0.0.0 --port $PORT
-```
-
-Для портфолио этого достаточно: приложение работает как единый Web Service без отдельного frontend-хостинга.
-
----
-
-## Что можно добавить
-
-* drag-and-drop сортировку;
+* drag-and-drop сортировка;
 * экспорт задач в CSV / JSON;
 * клавиатурные shortcuts;
 * публичную read-only ссылку;
 * мини-календарь дедлайнов;
-* историю изменений задач.
+* история изменений задач.
 
 Архитектура проекта позволяет добавлять эти функции без переделки основной структуры.
 
@@ -162,6 +143,5 @@ uvicorn app.main:app --host 0.0.0.0 --port $PORT
 <div align="center">
 
 **Card Catalog**
-*Portfolio project · Full-stack · FastAPI*
 
 </div>
