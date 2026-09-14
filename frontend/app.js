@@ -229,15 +229,53 @@ function startEdit(titleEl){
   input.addEventListener('blur', commit, {once: true});
 }
 
+// ---------- Confirmation feedback (visual pulse + soft sound) ----------
+// Plays only when marking a task as DONE, not when reopening it — a
+// small reward moment, not noise on every click.
+
+function playCompleteSound(){
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const now = ctx.currentTime;
+
+    [523.25, 783.99].forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      const start = now + i * 0.07;
+      gain.gain.setValueAtTime(0, start);
+      gain.gain.linearRampToValueAtTime(0.12, start + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.25);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(start);
+      osc.stop(start + 0.3);
+    });
+  } catch (err) {
+    // Web Audio unsupported or blocked — fail silently, it's a nice-to-have.
+  }
+}
+
 async function toggleTask(id, currentlyDone){
   const card = document.querySelector(`.card[data-id="${id}"]`);
+  const markingDone = !currentlyDone;
+
+  if (markingDone && card) {
+    const circle = card.querySelector('.check-circle');
+    if (circle) {
+      circle.classList.add('pulse');
+      circle.addEventListener('animationend', () => circle.classList.remove('pulse'), {once: true});
+    }
+    playCompleteSound();
+  }
+
   if (card) card.classList.add('removing');
   await new Promise(r => setTimeout(r, card ? 260 : 0));
 
   await fetch(`${API}/${id}`, {
     method: 'PATCH',
     headers: authHeaders({'Content-Type': 'application/json'}),
-    body: JSON.stringify({done: !currentlyDone})
+    body: JSON.stringify({done: markingDone})
   });
   fetchTasks();
 }
