@@ -108,9 +108,26 @@ const CATEGORY_ICONS = {
 
 // ---------- Data ----------
 
+let isInitialLoad = true;
+
+function renderSkeleton(count = 3){
+  const skeletonHtml = Array.from({length: count}).map(() => `
+    <div class="skeleton-card">
+      <span class="check-circle-placeholder"></span>
+      <div class="skeleton-line title"></div>
+      <div class="skeleton-line sub"></div>
+    </div>
+  `).join('');
+  document.getElementById('openCards').innerHTML = skeletonHtml;
+  document.getElementById('doneCards').innerHTML = '';
+}
+
 async function fetchTasks(){
+  if (isInitialLoad) renderSkeleton();
+
   const res = await fetch(API, {headers: authHeaders()});
   allTasks = await res.json();
+  isInitialLoad = false;
   render();
 }
 

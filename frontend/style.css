@@ -388,6 +388,42 @@ form.add button:active{transform:translateY(0) scale(.98);}
   animation:fadeIn .4s var(--ease) both;
 }
 
+/* Skeleton loading state — shown briefly while the first fetch is in flight */
+.skeleton-card{
+  background:var(--paper-card);
+  border:1.5px solid var(--line);
+  border-radius:3px;
+  padding:18px 16px 16px;
+  min-height:88px;
+  transition:background-color .35s var(--ease), border-color .35s var(--ease);
+}
+.skeleton-line{
+  height:10px;
+  border-radius:2px;
+  background:linear-gradient(90deg, var(--drawer) 25%, var(--line) 50%, var(--drawer) 75%);
+  background-size:200% 100%;
+  animation:skeletonShimmer 1.4s ease-in-out infinite;
+}
+.skeleton-line.title{width:70%; height:14px; margin:0 0 12px 32px;}
+.skeleton-line.sub{width:40%; margin-left:32px;}
+.skeleton-card .check-circle-placeholder{
+  width:22px; height:22px;
+  border-radius:50%;
+  background:var(--drawer);
+  display:inline-block;
+  vertical-align:top;
+  margin-right:10px;
+  animation:skeletonShimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes skeletonShimmer{
+  0%{background-position:200% 0;}
+  100%{background-position:-200% 0;}
+}
+@media (prefers-reduced-motion: reduce){
+  .skeleton-line, .check-circle-placeholder{animation:none; background:var(--drawer);}
+}
+
 @keyframes fadeSlideDown{
   from{opacity:0; transform:translateY(-8px);}
   to{opacity:1; transform:translateY(0);}
