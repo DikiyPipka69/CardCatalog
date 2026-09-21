@@ -21,3 +21,4 @@ class Task(Base):
     created_at: Mapped[datetime] = mapped_column(
         DateTime, default=lambda: datetime.now(timezone.utc)
     )
+    completed_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)

@@ -29,3 +29,4 @@ class TaskOut(TaskBase):
     id: int
     done: bool
     created_at: datetime
+    completed_at: Optional[datetime] = None

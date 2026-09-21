@@ -1,5 +1,7 @@
 """CRUD layer — all direct database operations live here, separate from routing."""
 
+from datetime import datetime, timezone
+
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -32,6 +34,15 @@ def create_task(db: Session, payload: schemas.TaskCreate, session_id: str) -> mo
 
 def update_task(db: Session, task: models.Task, payload: schemas.TaskUpdate) -> models.Task:
     updates = payload.model_dump(exclude_unset=True)
+
+    # Track completion time automatically — the client never sets this
+    # directly, it's derived from the done/undone transition.
+    if "done" in updates:
+        if updates["done"] and not task.done:
+            task.completed_at = datetime.now(timezone.utc)
+        elif not updates["done"]:
+            task.completed_at = None
+
     for field, value in updates.items():
         setattr(task, field, value)
     db.commit()

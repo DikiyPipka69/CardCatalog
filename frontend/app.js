@@ -38,6 +38,8 @@ const I18N = {
     emptyDone: 'Закрытых карточек пока нет.',
     due: 'до',
     overdue: 'просрочено',
+    completedToday: 'выполнено сегодня',
+    completedWeek: 'выполнено за неделю',
   },
   en: {
     eyebrow: 'Task Catalog',
@@ -51,6 +53,8 @@ const I18N = {
     emptyDone: 'No closed cards yet.',
     due: 'due',
     overdue: 'overdue',
+    completedToday: 'completed today',
+    completedWeek: 'completed this week',
   }
 };
 
@@ -145,6 +149,7 @@ function render(){
   const done = allTasks.filter(t => t.done).sort((a, b) => b.id - a.id);
 
   document.getElementById('openCount').textContent = open.length;
+  updateCompletionStats(done);
 
   const openEl = document.getElementById('openCards');
   const doneEl = document.getElementById('doneCards');
@@ -158,6 +163,25 @@ function render(){
     : `<div class="empty">${t('emptyDone')}</div>`;
 
   bindCardEvents();
+}
+
+function updateCompletionStats(doneTasks){
+  const now = new Date();
+  const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+  let todayCount = 0;
+  let weekCount = 0;
+
+  doneTasks.forEach(task => {
+    if (!task.completed_at) return;
+    const completedAt = new Date(task.completed_at);
+    if (completedAt >= startOfToday) todayCount++;
+    if (completedAt >= sevenDaysAgo) weekCount++;
+  });
+
+  document.getElementById('completedToday').textContent = todayCount;
+  document.getElementById('completedWeek').textContent = weekCount;
 }
 
 function isOverdue(task){
