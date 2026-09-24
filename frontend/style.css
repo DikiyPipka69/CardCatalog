@@ -455,6 +455,13 @@ form.add button:active{transform:translateY(0) scale(.98);}
   to{opacity:0; transform:scale(.92); filter:blur(2px);}
 }
 
+/* Suppresses the entrance animation for cards that were already on
+   screen — only genuinely new cards (or ones returning after a failed
+   delete) should play the "cardIn" stagger effect. */
+.card.no-enter{
+  animation:none;
+}
+
 @media (max-width:480px){
   form.add{flex-direction:column;}
   form.add input[name="title"], form.add select, form.add input[type="date"], form.add button{

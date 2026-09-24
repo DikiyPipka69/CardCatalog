@@ -113,6 +113,7 @@ const CATEGORY_ICONS = {
 // ---------- Data ----------
 
 let isInitialLoad = true;
+const renderedIds = new Set(); // tracks which task ids have already animated in once
 
 function renderSkeleton(count = 3){
   const skeletonHtml = Array.from({length: count}).map(() => `
@@ -162,6 +163,10 @@ function render(){
     ? done.map((task, i) => cardHtml(task, i)).join('')
     : `<div class="empty">${t('emptyDone')}</div>`;
 
+  // Any task rendered from here on has "already appeared" — its entrance
+  // animation shouldn't replay just because some other card changed.
+  [...open, ...done].forEach(task => renderedIds.add(task.id));
+
   bindCardEvents();
 }
 
@@ -198,9 +203,10 @@ function cardHtml(task, index){
   const overdue = isOverdue(task);
   const categoryLabel = t(CATEGORY_KEYS[task.category] || 'catGeneral');
   const categoryIcon = CATEGORY_ICONS[task.category] || CATEGORY_ICONS.general;
+  const skipEnter = renderedIds.has(task.id) ? 'no-enter' : '';
 
   return `
-    <div class="card ${task.done ? 'done' : ''}" data-id="${task.id}" style="--i:${index}">
+    <div class="card ${task.done ? 'done' : ''} ${skipEnter}" data-id="${task.id}" style="--i:${index}">
       <div class="card-top-row">
         <button class="check-circle" data-toggle="${task.id}" data-done="${task.done}" aria-label="toggle">${ICON_CHECK}</button>
         <div class="card-body">
@@ -253,12 +259,18 @@ function startEdit(titleEl){
   const commit = async () => {
     const newTitle = input.value.trim();
     if (newTitle && newTitle !== task.title) {
-      await fetch(`${API}/${id}`, {
-        method: 'PATCH',
-        headers: authHeaders({'Content-Type': 'application/json'}),
-        body: JSON.stringify({title: newTitle})
-      });
-      await fetchTasks();
+      task.title = newTitle; // optimistic — no need to refetch everything for a rename
+      render();
+      try {
+        const res = await fetch(`${API}/${id}`, {
+          method: 'PATCH',
+          headers: authHeaders({'Content-Type': 'application/json'}),
+          body: JSON.stringify({title: newTitle})
+        });
+        if (!res.ok) throw new Error('request failed');
+      } catch (err) {
+        await fetchTasks(); // fall back to the server's truth if the rename failed
+      }
     } else {
       render();
     }
@@ -298,9 +310,11 @@ function playCompleteSound(){
 }
 
 async function toggleTask(id, currentlyDone){
-  const card = document.querySelector(`.card[data-id="${id}"]`);
   const markingDone = !currentlyDone;
+  const task = allTasks.find(x => String(x.id) === String(id));
+  if (!task) return;
 
+  const card = document.querySelector(`.card[data-id="${id}"]`);
   if (markingDone && card) {
     const circle = card.querySelector('.check-circle');
     if (circle) {
@@ -310,24 +324,47 @@ async function toggleTask(id, currentlyDone){
     playCompleteSound();
   }
 
-  if (card) card.classList.add('removing');
-  await new Promise(r => setTimeout(r, card ? 260 : 0));
+  // Optimistic update: reflect the change on screen immediately, without
+  // waiting for the server or re-fetching every other task. Only this
+  // one task's state changes locally — nothing else re-renders from
+  // scratch, so ticking several tasks in a row feels instant.
+  const previousState = {done: task.done, completed_at: task.completed_at};
+  task.done = markingDone;
+  task.completed_at = markingDone ? new Date().toISOString() : null;
+  render();
 
-  await fetch(`${API}/${id}`, {
-    method: 'PATCH',
-    headers: authHeaders({'Content-Type': 'application/json'}),
-    body: JSON.stringify({done: markingDone})
-  });
-  fetchTasks();
+  try {
+    const res = await fetch(`${API}/${id}`, {
+      method: 'PATCH',
+      headers: authHeaders({'Content-Type': 'application/json'}),
+      body: JSON.stringify({done: markingDone})
+    });
+    if (!res.ok) throw new Error('request failed');
+  } catch (err) {
+    // Server rejected it or the network dropped — roll back to the last
+    // known-good state instead of leaving the UI lying about reality.
+    task.done = previousState.done;
+    task.completed_at = previousState.completed_at;
+    render();
+  }
 }
 
 async function deleteTask(id){
-  const card = document.querySelector(`.card[data-id="${id}"]`);
-  if (card) card.classList.add('removing');
-  await new Promise(r => setTimeout(r, card ? 280 : 0));
+  const index = allTasks.findIndex(x => String(x.id) === String(id));
+  if (index === -1) return;
 
-  await fetch(`${API}/${id}`, {method: 'DELETE', headers: authHeaders()});
-  fetchTasks();
+  const [removedTask] = allTasks.splice(index, 1);
+  render();
+
+  try {
+    const res = await fetch(`${API}/${id}`, {method: 'DELETE', headers: authHeaders()});
+    if (!res.ok) throw new Error('request failed');
+  } catch (err) {
+    // Put it back if the delete didn't actually go through server-side.
+    allTasks.splice(index, 0, removedTask);
+    renderedIds.delete(removedTask.id); // let it animate back in
+    render();
+  }
 }
 
 document.getElementById('addForm').addEventListener('submit', async (e) => {
