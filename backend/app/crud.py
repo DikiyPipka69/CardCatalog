@@ -2,7 +2,7 @@
 
 from datetime import datetime, timezone
 
-from sqlalchemy import select
+from sqlalchemy import delete, select
 from sqlalchemy.orm import Session
 
 from app import models, schemas
@@ -53,3 +53,18 @@ def update_task(db: Session, task: models.Task, payload: schemas.TaskUpdate) -> 
 def delete_task(db: Session, task: models.Task) -> None:
     db.delete(task)
     db.commit()
+
+
+def clear_completed_tasks(db: Session, session_id: str) -> int:
+    """Permanently deletes every completed task for this session.
+
+    Used by the History page's "clear history" action — irreversible,
+    the caller (frontend) is responsible for confirming with the user
+    first.
+    """
+    stmt = delete(models.Task).where(
+        models.Task.session_id == session_id, models.Task.done == True  # noqa: E712
+    )
+    result = db.execute(stmt)
+    db.commit()
+    return result.rowcount

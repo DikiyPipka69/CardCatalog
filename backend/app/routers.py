@@ -32,6 +32,18 @@ def create_task(
     return crud.create_task(db, payload, session_id)
 
 
+@router.delete("/completed", status_code=200)
+def clear_completed(
+    db: Session = Depends(get_db),
+    session_id: str = Depends(get_session_id),
+):
+    """Permanently deletes every completed task — used by the History
+    page's "clear history" button. Declared before /{task_id} so FastAPI
+    doesn't try to parse "completed" as an integer id."""
+    deleted_count = crud.clear_completed_tasks(db, session_id)
+    return {"deleted": deleted_count}
+
+
 @router.patch("/{task_id}", response_model=schemas.TaskOut)
 def update_task(
     task_id: int,

@@ -143,6 +143,10 @@ h1{
 }
 .icon-toggle:hover{border-color:var(--accent); transform:scale(1.06);}
 .icon-toggle:active{transform:scale(.92);}
+a.icon-toggle{
+  text-decoration:none;
+  color:var(--ink);
+}
 
 .icon-toggle svg{
   position:absolute;
