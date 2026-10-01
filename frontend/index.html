@@ -45,7 +45,10 @@
         <option value="design" data-i18n="catDesign">Дизайн</option>
         <option value="dev" data-i18n="catDev">Разработка</option>
       </select>
-      <input type="date" name="due_date" title="Срок" />
+      <div class="date-field">
+        <label for="dueDateInput" class="date-field-label" data-i18n="dueDateLabel">Срок</label>
+        <input type="date" name="due_date" id="dueDateInput" />
+      </div>
       <button type="submit" data-i18n="addButton">Завести карточку</button>
     </form>
 

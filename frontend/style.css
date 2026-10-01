@@ -180,7 +180,22 @@ form.add input, form.add select{
 
 form.add input[name="title"]{flex:1 1 220px; min-width:0;}
 form.add select{flex:0 1 140px;}
-form.add input[type="date"]{flex:0 1 160px;}
+
+.date-field{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  flex:0 1 160px;
+}
+.date-field-label{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:10px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--muted);
+  transition:color .35s var(--ease);
+}
+.date-field input[type="date"]{width:100%;}
 
 form.add input:focus, form.add select:focus{
   outline:none;
@@ -468,7 +483,7 @@ form.add button:active{transform:translateY(0) scale(.98);}
 
 @media (max-width:480px){
   form.add{flex-direction:column;}
-  form.add input[name="title"], form.add select, form.add input[type="date"], form.add button{
+  form.add input[name="title"], form.add select, .date-field, form.add button{
     flex:1 1 auto;
     width:100%;
   }

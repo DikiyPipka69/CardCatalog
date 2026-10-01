@@ -40,6 +40,7 @@ const I18N = {
     overdue: 'просрочено',
     completedToday: 'выполнено сегодня',
     completedWeek: 'выполнено за неделю',
+    dueDateLabel: 'Срок',
   },
   en: {
     eyebrow: 'Task Catalog',
@@ -55,6 +56,7 @@ const I18N = {
     overdue: 'overdue',
     completedToday: 'completed today',
     completedWeek: 'completed this week',
+    dueDateLabel: 'Due date',
   }
 };
 
