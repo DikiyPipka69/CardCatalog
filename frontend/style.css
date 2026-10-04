@@ -148,6 +148,37 @@ a.icon-toggle{
   color:var(--ink);
 }
 
+.export-wrap{position:relative;}
+.export-menu{
+  position:absolute;
+  top:46px;
+  right:0;
+  min-width:96px;
+  background:var(--paper-card);
+  border:1.5px solid var(--line);
+  border-radius:4px;
+  box-shadow:0 6px 18px rgba(0,0,0,.15);
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  z-index:30;
+  animation:fadeSlideDown .18s var(--ease) both;
+}
+.export-menu button{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:12px;
+  letter-spacing:.04em;
+  text-align:left;
+  background:none;
+  border:none;
+  color:var(--ink);
+  padding:10px 14px;
+  cursor:pointer;
+  transition:background-color .15s var(--ease);
+}
+.export-menu button:hover{background:var(--drawer);}
+.export-menu button + button{border-top:1px solid var(--line);}
+
 .icon-toggle svg{
   position:absolute;
   width:18px;

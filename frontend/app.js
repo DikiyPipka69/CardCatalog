@@ -387,6 +387,64 @@ document.getElementById('addForm').addEventListener('submit', async (e) => {
   fetchTasks();
 });
 
+// ---------- Export ----------
+// Builds the file client-side from whatever is already loaded in
+// memory — no extra request to the server needed.
+
+function downloadFile(content, filename, mimeType){
+  const blob = new Blob([content], {type: mimeType});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function csvEscape(value){
+  const str = String(value ?? '');
+  return /[",\n]/.test(str) ? `"${str.replace(/"/g, '""')}"` : str;
+}
+
+function exportTasks(format){
+  const todayStr = new Date().toISOString().slice(0, 10);
+
+  if (format === 'json') {
+    downloadFile(JSON.stringify(allTasks, null, 2), `card-catalog-${todayStr}.json`, 'application/json');
+    return;
+  }
+
+  const columns = ['id', 'title', 'category', 'due_date', 'done', 'completed_at', 'created_at'];
+  const rows = [columns.join(',')];
+  allTasks.forEach(task => {
+    rows.push(columns.map(col => csvEscape(task[col])).join(','));
+  });
+  downloadFile(rows.join('\r\n'), `card-catalog-${todayStr}.csv`, 'text/csv;charset=utf-8');
+}
+
+const exportToggle = document.getElementById('exportToggle');
+const exportMenu = document.getElementById('exportMenu');
+
+exportToggle.addEventListener('click', (e) => {
+  e.stopPropagation();
+  exportMenu.hidden = !exportMenu.hidden;
+});
+
+exportMenu.querySelectorAll('button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    exportTasks(btn.dataset.format);
+    exportMenu.hidden = true;
+  });
+});
+
+document.addEventListener('click', (e) => {
+  if (!exportMenu.hidden && !e.target.closest('.export-wrap')) {
+    exportMenu.hidden = true;
+  }
+});
+
 // ---------- Init ----------
 
 initTheme();
