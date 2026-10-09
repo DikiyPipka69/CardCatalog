@@ -1,72 +1,164 @@
 <!doctype html>
-<html lang="ru" data-theme="light">
+<html lang="ru">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Card Catalog</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2214%22 fill=%22%231a1815%22/><rect x=%2222%22 y=%2228%22 width=%2256%22 height=%2244%22 rx=%223%22 fill=%22%23efe9de%22/><circle cx=%2232%22 cy=%2238%22 r=%223%22 fill=%22%231a1815%22/><rect x=%2222%22 y=%2250%22 width=%2256%22 height=%223%22 fill=%22%23a6875a%22/></svg>">
+<title>Detail & Shine — выездной автодетейлинг</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2214%22 fill=%22%230f1115%22/><path d=%22M20 60 L35 35 L65 35 L80 60 Z%22 fill=%22none%22 stroke=%22%23e0a13c%22 stroke-width=%224%22/><circle cx=%2235%22 cy=%2265%22 r=%226%22 fill=%22%23e0a13c%22/><circle cx=%2265%22 cy=%2265%22 r=%226%22 fill=%22%23e0a13c%22/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <div>
-        <p class="eyebrow" data-i18n="eyebrow">Картотека задач</p>
-        <h1>Card Catalog</h1>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <div class="brand">DETAIL <span>&</span> SHINE</div>
+      <a href="#booking" class="nav-cta">Записаться</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <p class="hero-eyebrow">Выездной автодетейлинг · приедем к вам</p>
+      <h1>Ваша машина будет<br>сиять <span class="highlight">как в салоне</span></h1>
+      <p class="hero-sub">Полировка, химчистка, керамика — без поездок в сервис. Работаем по всему городу, приезжаем в удобное время.</p>
+      <a href="#booking" class="btn-primary">Оставить заявку</a>
+    </div>
+  </header>
+
+  <section class="trust-bar reveal">
+    <div class="section-inner trust-inner">
+      <div class="trust-item">
+        <span class="trust-number" data-target="8" data-suffix="+">0</span>
+        <span class="trust-label">лет опыта</span>
       </div>
-      <div class="header-right">
-        <a href="/history.html" class="icon-toggle" title="История задач" aria-label="История задач">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M12 8v4l3 3M3 12a9 9 0 1 0 3-6.7"/><path d="M3 3v5h5"/></svg>
-        </a>
-        <div class="export-wrap">
-          <button class="icon-toggle" id="exportToggle" title="Экспорт задач" aria-label="Экспорт задач">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 19h16"/></svg>
-          </button>
-          <div class="export-menu" id="exportMenu" hidden>
-            <button data-format="csv">CSV</button>
-            <button data-format="json">JSON</button>
+      <div class="trust-item">
+        <span class="trust-number" data-target="500" data-suffix="+">0</span>
+        <span class="trust-label">машин в работе</span>
+      </div>
+      <div class="trust-item">
+        <span class="trust-number" data-target="24" data-suffix="/7">0</span>
+        <span class="trust-label">на связи</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="services" id="services">
+    <div class="section-inner reveal">
+      <p class="section-eyebrow">Услуги</p>
+      <h2>Выберите то, что нужно вашей машине</h2>
+      <div class="service-grid">
+        <div class="service-card">
+          <div class="service-icon">01</div>
+          <h3>Экспресс-мойка</h3>
+          <p>Быстрая мойка кузова и салона, если нужно навести порядок перед встречей.</p>
+          <span class="service-price">от 1 500 ₽</span>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">02</div>
+          <h3>Химчистка салона</h3>
+          <p>Глубокая чистка сидений, ковриков и потолка от пятен и запахов.</p>
+          <span class="service-price">от 4 000 ₽</span>
+        </div>
+        <div class="service-card featured">
+          <div class="service-icon">03</div>
+          <h3>Полный детейлинг</h3>
+          <p>Кузов, салон, полировка и защитное покрытие — комплексный уход под ключ.</p>
+          <span class="service-price">от 8 500 ₽</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="booking" id="booking">
+    <div class="section-inner booking-inner reveal">
+      <div class="booking-text">
+        <p class="section-eyebrow">Запись</p>
+        <h2>Оставьте заявку — перезвоним в течение часа</h2>
+        <p class="booking-sub">Укажите удобную дату, и мы согласуем точное время по телефону.</p>
+      </div>
+
+      <form class="booking-form" id="bookingForm">
+        <div class="form-row">
+          <input type="text" name="name" placeholder="Ваше имя" required maxlength="120" />
+          <input type="tel" name="phone" placeholder="Телефон" required maxlength="40" />
+        </div>
+        <div class="form-row">
+          <select name="service">
+            <option value="express">Экспресс-мойка</option>
+            <option value="interior">Химчистка салона</option>
+            <option value="full" selected>Полный детейлинг</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="date-field">
+            <label for="preferredDateInput" class="date-field-label">Желаемая дата</label>
+            <input type="date" name="preferred_date" id="preferredDateInput" />
           </div>
         </div>
-        <button class="icon-toggle" id="langToggle" title="Switch language" aria-label="Switch language">
-          <span id="langLabel">RU</span>
-        </button>
-        <button class="icon-toggle" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
-          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-        </button>
-        <div class="count"><strong id="openCount">0</strong><span data-i18n="inProgress">в работе</span></div>
-      </div>
-    </header>
-
-    <div class="completion-stats" id="completionStats">
-      <span><strong id="completedToday">0</strong> <span data-i18n="completedToday">выполнено сегодня</span></span>
-      <span class="stats-sep">·</span>
-      <span><strong id="completedWeek">0</strong> <span data-i18n="completedWeek">выполнено за неделю</span></span>
+        <textarea name="message" placeholder="Комментарий (необязательно)" maxlength="500" rows="3"></textarea>
+        <button type="submit">Отправить заявку</button>
+        <p class="form-status" id="formStatus"></p>
+      </form>
     </div>
+  </section>
 
-    <form class="add" id="addForm">
-      <input type="text" name="title" id="titleInput" data-i18n-placeholder="titlePlaceholder" placeholder="Новая карточка — что нужно сделать?" required maxlength="200" />
-      <select name="category" id="categorySelect">
-        <option value="general" data-i18n="catGeneral">Общее</option>
-        <option value="client" data-i18n="catClient">Клиент</option>
-        <option value="design" data-i18n="catDesign">Дизайн</option>
-        <option value="dev" data-i18n="catDev">Разработка</option>
-      </select>
-      <div class="date-field">
-        <label for="dueDateInput" class="date-field-label" data-i18n="dueDateLabel">Срок</label>
-        <input type="date" name="due_date" id="dueDateInput" />
+  <section class="faq" id="faq">
+    <div class="section-inner reveal">
+      <p class="section-eyebrow">Вопросы</p>
+      <h2>Что чаще всего спрашивают</h2>
+
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            Сколько занимает полный детейлинг?
+            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner"><p>В среднем 3–5 часов в зависимости от состояния машины. Мы работаем у вас во дворе или на парковке — никуда ехать не нужно.</p></div></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            Вы приезжаете в любой район города?
+            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner"><p>Да, работаем по всему городу и ближайшим пригородам. Уточним точный адрес и подтвердим время при созвоне.</p></div></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            Нужно ли мне быть рядом во время работы?
+            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner"><p>Нет, вы можете заниматься своими делами — достаточно передать ключи и указать, где припаркована машина. Позвоним, когда закончим.</p></div></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            Какие способы оплаты принимаете?
+            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner"><p>Наличные, перевод на карту или по QR-коду — как вам удобнее. Оплата после завершения работы.</p></div></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            Даёте ли гарантию на результат?
+            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner"><p>Да, если что-то не устроит в качестве уборки или полировки — приедем и исправим бесплатно в течение 48 часов.</p></div></div>
+        </div>
       </div>
-      <button type="submit" data-i18n="addButton">Завести карточку</button>
-    </form>
+    </div>
+  </section>
 
-    <div class="drawer-label" data-i18n="inProgressLabel">В работе</div>
-    <div class="cards" id="openCards"></div>
-
-    <div class="drawer-label" data-i18n="doneLabel">Закрыто</div>
-    <div class="cards" id="doneCards"></div>
-  </div>
+  <footer class="footer">
+    <div class="section-inner">
+      <span>Detail & Shine · выездной автодетейлинг</span>
+      <a href="/admin.html" class="admin-link">Для администратора</a>
+    </div>
+  </footer>
 
   <script src="app.js"></script>
 </body>
